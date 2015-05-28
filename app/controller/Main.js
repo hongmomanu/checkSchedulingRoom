@@ -11,8 +11,8 @@ Ext.define('checkScheduling.controller.Main', {
     config: {
         views: [
             'Main',
-            'Online',
-            'PassedNum'
+
+            'RoomNum'
         ],
         requires: [
 
@@ -46,7 +46,7 @@ Ext.define('checkScheduling.controller.Main', {
         refs: {
 
             nav: 'main',
-            passednum:'roomnum',
+            roomnum:'roomnum',
             tippanel:'main #tip',
             settingbtn:'main #settingbtn'
 
@@ -131,15 +131,15 @@ Ext.define('checkScheduling.controller.Main', {
         testobj=this;
 
         var url=localStorage.serverurl;
-        //var roomno=localStorage.roomno;
+        var roomno=localStorage.roomno;
         if(!url||url==""){
             Ext.Msg.alert('提示','服务地址为空');
             return ;
         }
-        /*if(!roomno||roomno==""){
+        if(!roomno||roomno==""){
             Ext.Msg.alert('提示','房间号为空');
             return ;
-        }*/
+        }
         //url=url?"ws://"+url.split("://")[1].split(":")[0]+":3001/":"ws://localhost:3001/";
         url=url.replace(/(:\d+)/g,":3001");
         url=url.replace("http","ws");
@@ -148,16 +148,19 @@ Ext.define('checkScheduling.controller.Main', {
 
 
         this.socket.onmessage = function(event) {
-            //alert(1111);
             var data=JSON.parse(event.data);
+            if(data.type==2){
+                if(localStorage.roomno==data.roomno){
+                    var content=data.content;
+                    var str='<div><marquee  scrollamount=2>'+content+'</marquee></div>';
+                    me.getTippanel().setHtml(str);
 
-            //Ext.Msg.alert("1111");
+                }
 
+            }else if(data.type==0){
+                me.getRoomData();
+            }
 
-            console.log(data);
-
-
-            me.getRoomData();
 
         };
         this.socket.onclose = function(event) {
@@ -171,8 +174,8 @@ Ext.define('checkScheduling.controller.Main', {
 
         this.socket.onopen = function() {
 
-            me.socket.send(JSON.stringify({
-                type:"mainscreen",
+           me.socket.send(JSON.stringify({
+                type:"smallscreen",
                 content: '121'
             }));
         };
@@ -180,200 +183,29 @@ Ext.define('checkScheduling.controller.Main', {
     },
 
 
-    autoscrollshow:function(){
-        var me=this;
-        var listscroll=me.getPassednum().getScrollable().getScroller();
-        setInterval(function(){
-            var scrollheight=listscroll.getSize().y;
-            var bodyheight=Ext.getBody().getHeight();
-            if((scrollheight-(bodyheight*0.9-60))>=me.scrollinit){
 
-                me.scrollinit=me.scrollinit+(bodyheight*0.9-90);
-                listscroll.scrollTo(0,me.scrollinit);
-
-            }else{
-                me.scrollinit=0;
-                listscroll.scrollToTop();
-            }
-
-
-
-        }, 5000)
-
-    },
-    getPassedData:function(){
+    getRoomData:function(){
 
         var me=this;
-        var store=this.getPassednum().getStore();
-        var linenos= 0;
-        if(store.data.items.length>0){
+        var store=this.getRoomnum().getStore();
 
-            linenos=store.data.items[store.data.items.length-1].get('linenos');
-        }else{
-            linenos=0;
-        }
         var successFunc = function (response, action) {
             var res=JSON.parse(response.responseText);
-            for(var i=0;i<res.length;i++){
-                store.add(res[i]);
-            }
-
+            store.setData(res);
 
         };
         var failFunc = function (response, action) {
             Ext.Msg.alert('获取数据失败', '服务器连接异常，请稍后再试', Ext.emptyFn);
 
         };
-        var url = "getbigscreenpasseddata";
+        var url = "getroomdata";
         var params = {
-            linenos:linenos
+            roomno:localStorage.roomno
         };
         CommonUtil.ajaxSend(params, url, successFunc, failFunc, 'GET');
 
     },
-    makeColor:function(res){
-        var store=this.getPassednum().getStore();
-        var data=store.data.items;
 
-        for(var j=0;j<res.length;j++){
-            for(var i=0;i<data.length;i++){
-                if(res[j].sortcode==data[i].get('sortcode')){
-                    var raw=data[i].raw;
-                    raw.css=true;
-                    console.log("hahah");
-                    data[i].set(raw);
-                }
-
-            }
-
-        }
-
-
-    },
-    removePassed:function(item){
-        var store=this.getPassednum().getStore();
-        var data=store.data.items;
-
-
-        for(var i=0;i<data.length;i++){
-            if(item.get('sortcode')==data[i].get('sortcode')){
-                store.removeAt(i);
-            }
-
-        }
-
-
-
-    },
-    getOnlineData:function(me){
-
-       // var me=this;
-
-        var store=me.getOnlinelist().getStore();
-
-        var linenos= 0;
-        if(store.data.items.length>0){
-
-            linenos=store.data.items[store.data.items.length-1].get('linenos');
-        }else{
-            linenos=0;
-        }
-
-        var successFunc = function (response, action) {
-            var res=JSON.parse(response.responseText);
-            me.makeColor(res);
-
-            if(!me.isplaying)me.playlist=[];
-
-            if(res.length>0){
-                if(me.isplaying){
-                    me.playlist=me.playlist.concat(res);
-                }else{
-                    me.playlist=res;
-                    me.isplaying=true;
-                    me.makevoiceanddisplay(store,0,me);
-                }
-
-            }
-
-
-
-        };
-        var failFunc = function (response, action) {
-            Ext.Msg.alert('获取数据失败', '服务器连接异常，请稍后再试', Ext.emptyFn);
-
-        };
-        var url = "getbigscreendata";
-        var params = {
-            linenos:linenos
-        };
-        CommonUtil.ajaxSend(params, url, successFunc, failFunc, 'GET');
-
-    },
-    makevoiceanddisplay:function(store,index,me){
-        //console.log(1)
-        /*var a=Ext.select('.flash');
-        a.removeCls('flash');*/
-        if(store.data.items.length>0){
-            var num=store.data.items.length-1;
-            var raw=store.data.items[num].raw;
-            raw.css='noflash';
-            store.data.items[num].set(raw);
-            me.removePassed(store.data.items[num],num);
-
-        }
-        if(me.playlist.length-1>=index){
-            var item=me.playlist[index];
-
-            item.css='flash';
-            store.add(item);
-            var text="请"+item.showno+item.patname+" 到"+item.roomno+"号机房门口等候检查";
-
-            me.playvoice(text,store,index,me.makevoiceanddisplay,me);
-        }else{
-            me.isplaying=false;
-            me.playlist=[];
-            /*navigator.speech.removeEventListener("SpeakCompleted",function(){});
-            navigator.speech.stopSpeaking();*/
-        }
-
-
-
-    },
-    speaktimes:0,
-
-    playvoice:function(text,store,index,callback,me){
-
-        //callback(store,index,me);
-
-            var voiceurl=localStorage.serverurl+'audio/alert.wav';
-            var tipvoice=new Audio(voiceurl);
-
-
-            tipvoice.addEventListener('ended',function(){
-                me.speaktimes++;
-                try{
-                    navigator.speech.startSpeaking( text , {voice_name: 'xiaoyan'} );
-                }catch (e){}
-                finally{
-                    setTimeout(function(){
-                        if(me.speaktimes==2){
-                            me.speaktimes=0;
-                            callback(store,index+1,me);
-                        }else{
-                            tipvoice.play()
-                        }
-                    },7000)
-                }
-
-
-
-
-            });
-            tipvoice.play();
-
-
-    },
 
     initRender: function () {
 
@@ -381,9 +213,7 @@ Ext.define('checkScheduling.controller.Main', {
 
         //navigator.speech.startSpeaking( "社保卡", {voice_name: 'xiaoyan'} );
         this.websocketInit();
-        this.getOnlineData(this);
-        this.getPassedData();
-        this.autoscrollshow();
+        this.getRoomData();
 
 
 

@@ -7,6 +7,7 @@ Ext.define('checkScheduling.model.RoomNum', {
             'sortno',
             'sortcode',
             'stateflag',
+            'sicktype',
             'patname',
             'linenos',
             'roomno',

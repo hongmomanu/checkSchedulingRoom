@@ -1,5 +1,5 @@
 Ext.define('checkScheduling.view.RoomNum', {
-    extend: 'Ext.DataView',
+    extend: 'Ext.List',
     xtype:'roomnum',
     requires: [
 
@@ -12,16 +12,33 @@ Ext.define('checkScheduling.view.RoomNum', {
         //cls:'columnlist5',
         itemTpl: [
             '<div class="',
-            '<tpl if="css">',
-            'removepassed',
+            '<tpl if="stateflag==\'ca\'">',
+            'flash',
             '<tpl else>',
-            'passedcommon',
+            'noflash',
             '</tpl>',
             '" >',
-            //'<div style="padding:4px;vertical-align: middle;text-align: center;display: inline-block;width: 30px;height: 30px;border: 1px solid red;border-radius: 15px;background-color: dodgerblue;">{num}</div>',
-            '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">{showno}</div>',
+            '<div class="description" style="padding:5px;display: inline-block;text-align: center;vertical-align: middle;">',
+            '<tpl if="sicktype==\'z\'">',
+            '住院',
+            '<tpl else>',
+            '门诊',
+            '</tpl>',
+            '</div>',
+            '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">' +
+            '{showno}' +
+            '</div>',
             '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">{patname}</div>',
+
+            '<div class="description" style="padding:5px;display: inline-block;text-align: center;vertical-align: middle;">',
+            '<tpl if="stateflag==\'ca\'">',
+            '正在检查中',
+            '<tpl else>',
+            '请在门口等候',
+            '</tpl>',
+            '</div>',
             '</div>'
+
         ].join("")
     }
 });
