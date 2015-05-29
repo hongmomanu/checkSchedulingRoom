@@ -158,7 +158,11 @@ Ext.define('checkScheduling.controller.Main', {
                 }
 
             }else if(data.type==0){
-                me.getRoomData();
+
+                if(localStorage.roomno==data.roomno){
+                    me.getRoomData();
+                }
+
             }
 
 

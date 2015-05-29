@@ -24,8 +24,17 @@ Ext.define('checkScheduling.view.Main', {
                     {
                         xtype : 'toolbar',
                         docked: 'top',
-                        title: '房间病人排队'
+                        title: '房间病人等候',
+                        items:[
+                            {
+                                xtype:'button',
+                                docked: 'right',
+                                itemId:'settingbtn',
+                                iconCls:'settings'
+                            }
+                        ]
                     },
+
                     {
                         xtype:'roomnum'
 
