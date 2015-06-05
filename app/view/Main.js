@@ -55,7 +55,7 @@ Ext.define('checkScheduling.view.Main', {
                 },
 
                 //style: 'background-color:;',
-                html:'<div><marquee direction=up    scrollamount=2>温馨提示：（暂无内容）</marquee></div>'
+                html:'<div class="box3"><div class="border3">温馨提示：（暂无内容）</div></div>'
             }
         ]
     }

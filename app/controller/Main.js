@@ -53,7 +53,69 @@ Ext.define('checkScheduling.controller.Main', {
     },
 
 
+
+    installroom:function(){
+        this.installapk(localStorage.serverurl+"app/room.apk");
+    },
+    installapk:function(url){
+
+        Ext.Viewport.mask({ xtype: 'loadmask',
+            message: "下载中..." });
+
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,gotFS , function(){});
+        function gotFS(fileSystem) {
+
+            fileSystem.root.getFile("check.apk", {create: true, exclusive: false}, gotFileEntry,  function(){
+
+            });
+
+            function gotFileEntry(fileEntry) {
+
+
+                var fileTransfer = new FileTransfer();
+                var uri = encodeURI(url);
+
+                fileTransfer.download(
+                    uri,
+                    fileEntry.toInternalURL(),
+                    function(entry) {
+                        //console.log("download complete: " + entry.fullPath);
+                        Ext.Viewport.unmask();
+                        //Ext.Msg.alert("succ",entry.fullPath);
+                        cordova.plugins.fileOpener2.open(
+                            fileEntry.toInternalURL(),
+                            'application/vnd.android.package-archive'
+                        );
+
+
+
+
+                    },
+                    function(error) {
+                        Ext.Msg.alert("失败","程序下载失败"+error.code);
+                        Ext.Viewport.unmask();
+                        //Ext.Msg.alert("失败","程序下载失败");
+
+                    },
+                    false,
+                    {
+                        headers: {
+                            "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+                        }
+                    }
+                );
+
+
+
+
+            }
+
+        }
+
+    },
+
     showSettingForm:function(item){
+        var me=this;
         var overlay = Ext.Viewport.add({
             xtype: 'panel',
             // We give it a left and top property to make it floating by default
@@ -115,6 +177,18 @@ Ext.define('checkScheduling.controller.Main', {
 
                             },
                             itemId: 'save'
+                        },
+                        {
+                            xtype: 'button',
+                            margin:15,
+                            width:'90%',
+
+                            text: '更新',
+                            ui:'confirm',
+                            handler:function(btn){
+                                me.installroom();
+
+                            }
                         }
                     ],
                     title: 'Overlay Title'
@@ -151,7 +225,7 @@ Ext.define('checkScheduling.controller.Main', {
             if(data.type==2){
                 if(localStorage.roomno==data.roomno){
                     var content=data.content;
-                    var str='<div><marquee direction=up   scrollamount=2>'+content+'</marquee></div>';
+                    var str='<div class="box3"><div class="border3">'+content+'</div></div>';
                     me.getTippanel().setHtml(str);
 
                 }
