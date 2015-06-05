@@ -6,7 +6,7 @@ Ext.define('checkScheduling.view.Main', {
         'Ext.Video'
     ],
     config: {
-        layout:'vbox',
+        layout:'hbox',
 
         fullscreen: true,
 
@@ -47,9 +47,15 @@ Ext.define('checkScheduling.view.Main', {
                 flex:1,
                 padding:10,
                 itemId:'tip',
+                items:{
+                xtype : 'toolbar',
+                docked: 'top',
+                title: '房间广播',
+
+                },
 
                 //style: 'background-color:;',
-                html:'<div><marquee  scrollamount=2>温馨提示：（暂无内容）</marquee></div>'
+                html:'<div><marquee direction=up    scrollamount=2>温馨提示：（暂无内容）</marquee></div>'
             }
         ]
     }

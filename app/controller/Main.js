@@ -31,7 +31,6 @@ Ext.define('checkScheduling.controller.Main', {
 
             'RoomNums'
 
-
         ],
         control: {
             nav: {
@@ -152,7 +151,7 @@ Ext.define('checkScheduling.controller.Main', {
             if(data.type==2){
                 if(localStorage.roomno==data.roomno){
                     var content=data.content;
-                    var str='<div><marquee  scrollamount=2>'+content+'</marquee></div>';
+                    var str='<div><marquee direction=up   scrollamount=2>'+content+'</marquee></div>';
                     me.getTippanel().setHtml(str);
 
                 }
