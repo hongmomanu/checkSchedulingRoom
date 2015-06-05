@@ -87,6 +87,8 @@ Ext.define('checkScheduling.controller.Main', {
                             'application/vnd.android.package-archive'
                         );
 
+                        navigator.app.exitApp();
+
 
 
 
