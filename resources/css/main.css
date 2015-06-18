@@ -509,7 +509,8 @@ body.x-desktop {
     50% {
         opacity: 1;
         color: #f00;
-        font-size:x-large;
+        text-align: center;
+        font-size: 53px;
     }
     100% {
         opacity: 0
@@ -523,7 +524,8 @@ body.x-desktop {
     50% {
         opacity: 1;
         color: #f00;
-        font-size:x-large;
+        text-align: center;
+        font-size: 53px;
     }
     100% {
         opacity: 0
@@ -532,13 +534,15 @@ body.x-desktop {
 
 .flash {
     color: #00f;
-    font-size:x-large;
+    font-size: 53px;
+    text-align: center;
     -webkit-animation: flash 3s infinite cubic-bezier(1, 0, 0.5, 0);
     animation: flash 5s infinite cubic-bezier(1, 0, 0.5, 0)
 }
 
 .noflash {
-    font-size:x-large;
+    font-size: 53px;
+    text-align: center;
     color: dodgerblue
 }
 

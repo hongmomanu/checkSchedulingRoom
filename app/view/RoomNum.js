@@ -28,7 +28,7 @@ Ext.define('checkScheduling.view.RoomNum', {
             '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">' +
             '{showno}' +
             '</div>',
-            '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">{patname}</div>',
+            '<div class="description" style="padding:4px;display: inline-block;text-align: center;vertical-align: middle;">{patname}</div><br>',
 
             '<div class="description" style="padding:5px;display: inline-block;text-align: center;vertical-align: middle;">',
             '<tpl if="stateflag==\'ca\'">',

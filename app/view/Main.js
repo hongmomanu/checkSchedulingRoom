@@ -24,7 +24,7 @@ Ext.define('checkScheduling.view.Main', {
                     {
                         xtype : 'toolbar',
                         docked: 'top',
-                        title: '房间病人等候',
+                        title: (localStorage.roomname?localStorage.roomname:'')+'房间',
                         items:[
                             {
                                 xtype:'button',

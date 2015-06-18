@@ -30,6 +30,11 @@ http://localhost:3000/getbigscreenpasseddata?linesno=2
 http://localhost:3000/getroomdata?roomno=12 
 小屏获取最新数据
 
+http://localhost:3000/changeVoiceTimesFire?totaltimes=2
+
+http://localhost:3000/changeShowLinesFire?lines=7
+
+
 
 
 

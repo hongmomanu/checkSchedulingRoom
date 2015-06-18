@@ -133,7 +133,7 @@ Ext.define('checkScheduling.controller.Main', {
 
             // Set the width and height of the panel
             width: 350,
-            height: 180,
+            height: 200,
 
             // Here we specify the #id of the element we created in `index.html`
             //contentEl: 'content',
@@ -163,6 +163,13 @@ Ext.define('checkScheduling.controller.Main', {
                             label: 'roomno'
                         },
                         {
+                            xtype: 'textfield',
+                            name: 'roomname',
+                            hidden:false,
+                            value:localStorage.roomname,
+                            label: 'roomname'
+                        },
+                        {
                             xtype: 'button',
                             margin:15,
                             width:'90%',
@@ -174,6 +181,7 @@ Ext.define('checkScheduling.controller.Main', {
                                 var formdata=form.getValues();
                                 localStorage.serverurl=formdata.serverurl;
                                 localStorage.roomno=formdata.roomno;
+                                localStorage.roomname=formdata.roomname;
                                 overlay.hide();
                                 window.location.reload();
 
