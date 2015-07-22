@@ -210,6 +210,11 @@ Ext.define('checkScheduling.controller.Main', {
 
 
     },
+    maketip:function(){
+        //var str='<div><marquee  scrollamount=2>'+localStorage.tip+'</marquee></div>';
+        var str='<div class="box3"><div class="border3">'+localStorage.tip+'</div></div>';
+        this.getTippanel().setHtml(str);
+    },
     websocketInit:function(){
         testobj=this;
 
@@ -233,9 +238,13 @@ Ext.define('checkScheduling.controller.Main', {
         this.socket.onmessage = function(event) {
             var data=JSON.parse(event.data);
             if(data.type==2){
+                console.log(data.roomno);
                 if(localStorage.roomno==data.roomno){
                     var content=data.content;
                     var str='<div class="box3"><div class="border3">'+content+'</div></div>';
+
+                    localStorage.tip=content;
+
                     me.getTippanel().setHtml(str);
 
                 }
@@ -244,6 +253,16 @@ Ext.define('checkScheduling.controller.Main', {
 
                 if(localStorage.roomno==data.roomno){
                     me.getRoomData();
+                }
+
+            }else if(data.type==7){
+                //localStorage.speed=data.speed;
+                window.location.reload();
+            }else if(data.type==8){
+                //localStorage.speed=data.speed;
+                //window.location.reload();
+                if(data.num=localStorage.area){
+                    me.cleardata();
                 }
 
             }
@@ -261,6 +280,8 @@ Ext.define('checkScheduling.controller.Main', {
 
         this.socket.onopen = function() {
 
+            //alert(1);
+            console.log("websocket connected");
            me.socket.send(JSON.stringify({
                 type:"smallscreen",
                 content: '121'
@@ -270,7 +291,10 @@ Ext.define('checkScheduling.controller.Main', {
     },
 
 
-
+    cleardata:function(){
+        var store=this.getRoomnum().getStore();
+        store.removeAll();
+    },
     getRoomData:function(){
 
         var me=this;
@@ -297,11 +321,18 @@ Ext.define('checkScheduling.controller.Main', {
     initRender: function () {
 
 
+        try{
+            cordova.plugins.autoStart.enable();
+            //navigator.speech.startSpeaking( "", {voice_name: 'xiaoyan'} );
+        }catch(e){
 
-        //navigator.speech.startSpeaking( "社保卡", {voice_name: 'xiaoyan'} );
-        this.websocketInit();
-        this.getRoomData();
-
+        }finally {
+            //navigator.speech.startSpeaking( "社保卡", {voice_name: 'xiaoyan'} );
+            if(!localStorage.tip)localStorage.tip='温馨提示：（滚动播放，内容可被修改）';
+            this.websocketInit();
+            this.getRoomData();
+            this.maketip();
+        }
 
 
 
