@@ -36,6 +36,7 @@ Ext.define('checkScheduling.view.Main', {
                     },
 
                     {
+                        style: 'background-color:lightskyblue',
                         xtype:'roomnum'
 
                     }
