@@ -261,7 +261,7 @@ Ext.define('checkScheduling.controller.Main', {
             }else if(data.type==8){
                 //localStorage.speed=data.speed;
                 //window.location.reload();
-                if(data.num==localStorage.area){
+                if(data.num==localStorage.roomno){
                     me.cleardata();
                 }
 
