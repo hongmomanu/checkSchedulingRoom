@@ -56,7 +56,7 @@ Ext.define('checkScheduling.view.Main', {
                 },
 
                 //style: 'background-color:;',
-                html:'<div class="box3"><div class="border3">温馨提示：（暂无内容）</div></div>'
+                html:'<div >温馨提示：（暂无内容）</div>'
             }
         ]
     }

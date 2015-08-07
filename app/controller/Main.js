@@ -211,8 +211,8 @@ Ext.define('checkScheduling.controller.Main', {
 
     },
     maketip:function(){
-        //var str='<div><marquee  scrollamount=2>'+localStorage.tip+'</marquee></div>';
-        var str='<div class="box3"><div class="border3">'+localStorage.tip+'</div></div>';
+        //var str='<div class="box3"><div class="border3">'+localStorage.tip+'</div></div>';
+        var str='<div>'+localStorage.tip+'</div>';
         this.getTippanel().setHtml(str);
     },
     websocketInit:function(){
@@ -241,16 +241,15 @@ Ext.define('checkScheduling.controller.Main', {
                 console.log(data.roomno);
                 if(localStorage.roomno==data.roomno){
                     var content=data.content;
-                    var str='<div class="box3"><div class="border3">'+content+'</div></div>';
-
+                    var str='<div>'+content+'</div>';
                     localStorage.tip=content;
-
                     me.getTippanel().setHtml(str);
 
                 }
 
             }else if(data.type==0){
 
+                console.log(data);
                 if(localStorage.roomno==data.roomno){
                     me.getRoomData();
                 }
@@ -321,7 +320,28 @@ Ext.define('checkScheduling.controller.Main', {
     initRender: function () {
 
 
-        try{
+        var me=this;
+        mytestobj=me;
+        document.addEventListener("deviceready", function(){
+
+            try{
+                cordova.plugins.autoStart.enable();
+                //navigator.speech.startSpeaking( "", {voice_name: 'xiaoyan'} );
+            }catch(e){
+
+            }finally {
+                //navigator.speech.startSpeaking( "社保卡", {voice_name: 'xiaoyan'} );
+                if(!localStorage.tip)localStorage.tip='温馨提示：（滚动播放，内容可被修改）';
+                me.websocketInit();
+                me.getRoomData();
+                me.maketip();
+            }
+
+
+        }, false);
+
+
+        /*try{
             cordova.plugins.autoStart.enable();
             //navigator.speech.startSpeaking( "", {voice_name: 'xiaoyan'} );
         }catch(e){
@@ -332,7 +352,7 @@ Ext.define('checkScheduling.controller.Main', {
             this.websocketInit();
             this.getRoomData();
             this.maketip();
-        }
+        }*/
 
 
 

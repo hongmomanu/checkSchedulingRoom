@@ -535,6 +535,7 @@ body.x-desktop {
 .flash {
     color: #00f;
     font-size: 53px;
+    background-color: lightskyblue;
     text-align: center;
     -webkit-animation: flash 3s infinite cubic-bezier(1, 0, 0.5, 0);
     animation: flash 5s infinite cubic-bezier(1, 0, 0.5, 0)
@@ -543,7 +544,8 @@ body.x-desktop {
 .noflash {
     font-size: 53px;
     text-align: center;
-    color: dodgerblue
+    /*color: dodgerblue*/
+    color: black;
 }
 
 
