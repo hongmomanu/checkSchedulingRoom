@@ -250,9 +250,10 @@ Ext.define('checkScheduling.controller.Main', {
             }else if(data.type==0){
 
                 console.log(data);
-                if(localStorage.roomno==data.roomno){
+                me.getRoomDataNew(data.data);
+                /*if(localStorage.roomno==data.roomno){
                     me.getRoomData();
-                }
+                }*/
 
             }else if(data.type==7){
                 //localStorage.speed=data.speed;
@@ -283,7 +284,7 @@ Ext.define('checkScheduling.controller.Main', {
             console.log("websocket connected");
            me.socket.send(JSON.stringify({
                 type:"smallscreen",
-                content: '121'
+                content: localStorage.roomno
             }));
         };
 
@@ -293,6 +294,10 @@ Ext.define('checkScheduling.controller.Main', {
     cleardata:function(){
         var store=this.getRoomnum().getStore();
         store.removeAll();
+    },
+    getRoomDataNew:function(data){
+        var store=this.getRoomnum().getStore();
+        store.setData(data);
     },
     getRoomData:function(){
 
@@ -305,7 +310,7 @@ Ext.define('checkScheduling.controller.Main', {
 
         };
         var failFunc = function (response, action) {
-            Ext.Msg.alert('获取数据失败', '服务器连接异常，请稍后再试', Ext.emptyFn);
+            //Ext.Msg.alert('获取数据失败', '服务器连接异常，请稍后再试', Ext.emptyFn);
 
         };
         var url = "getroomdata";
