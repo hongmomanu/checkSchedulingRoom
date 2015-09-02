@@ -238,7 +238,7 @@ Ext.define('checkScheduling.controller.Main', {
         this.socket.onmessage = function(event) {
             var data=JSON.parse(event.data);
             if(data.type==2){
-                console.log(data.roomno);
+                //console.log(data.roomno);
                 if(localStorage.roomno==data.roomno){
                     var content=data.content;
                     var str='<div>'+content+'</div>';
@@ -249,7 +249,7 @@ Ext.define('checkScheduling.controller.Main', {
 
             }else if(data.type==0){
 
-                console.log(data);
+                //console.log(data);
                 me.getRoomDataNew(data.data);
                 /*if(localStorage.roomno==data.roomno){
                     me.getRoomData();
@@ -281,7 +281,7 @@ Ext.define('checkScheduling.controller.Main', {
         this.socket.onopen = function() {
 
             //alert(1);
-            console.log("websocket connected");
+            //console.log("websocket connected");
            me.socket.send(JSON.stringify({
                 type:"smallscreen",
                 content: localStorage.roomno
